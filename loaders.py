@@ -1,6 +1,6 @@
 import csv
 
-import Message
+import message
 
 
 class Composer(object):
@@ -43,4 +43,4 @@ class Composer(object):
         m = self.messages[r['message_ref']]
         b = 'Hello %s,\n\n%s\n\n%s' % (r['name'], m, self.footer)
 
-        return Message(self.sender, r.email, self.subject, b)
+        return message.Message(self.sender, r.email, self.subject, b)
