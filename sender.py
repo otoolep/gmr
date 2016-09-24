@@ -3,101 +3,15 @@ import csv
 import os
 import sys
 import argparse
-import base64
-from email.mime.text import MIMEText
 from apiclient import discovery, errors
-import oauth2client
 
 
 SENDER = "Philip O'Toole <philip@percolate.com>"
 TITLE = 'Director of Data Platform Engineering'
 SUBJECT = 'Data Platform and Analytics at Percolate'
 
-def get_credentials(credential_path):
-    store = oauth2client.file.Storage(credential_path)
-    credentials = store.get()
-    if not credentials or credentials.invalid:
-        return None
-    return credentials
 
 
-def create_message(sender, to, subject, message_text):
-    """Create a message for an email.
-
-    Args:
-      sender: Email address of the sender.
-      to: Email address of the receiver.
-      subject: The subject of the email message.
-      message_text: The text of the email message.
-
-    Returns:
-      An object containing a base64url encoded email object.
-    """
-    message = MIMEText(message_text)
-    message['to'] = to
-    message['from'] = sender
-    message['subject'] = subject
-    return {'raw': base64.urlsafe_b64encode(message.as_string())}
-
-
-def send_message(service, user_id, message):
-    """Send an email message.
-
-    Args:
-      service: Authorized Gmail API service instance.
-      user_id: User's email address. The special value "me"
-      can be used to indicate the authenticated user.
-      message: Message to be sent.
-
-    Returns:
-      Sent Message.
-    """
-    return service.users().messages().send(userId=user_id, body=message).execute()
-
-def load_recipients(path):
-    """
-    Load a recipient file
-    Args:
-        path: path to recipients file.
-
-    Returns:
-        list of dictionary objects
-    """
-    recipients = []
-    with open(path, 'rb') as csvfile:
-        lines = csv.reader(csvfile)
-        for l in lines:
-            recipients.append({'name': l[0], 'email': l[1], 'message-ref': [2]})
-    return recipients
-
-
-def load_messages(path):
-    """
-    Load a messages file.
-    Args:
-        path: path to messages file
-
-    Returns:
-        dictionary of messages
-    """
-    messages = {}
-    with open(path, 'rb') as csvfile:
-        lines = csv.reader(csvfile)
-        for l in lines:
-            messages[l[0]] = l[1]
-    return messages
-
-def compose(recipient, message, sender):
-    """
-    Compose a single email message
-    Args:
-        recipient: addressee name
-        message: message body
-        sender: send name
-    Returns:
-        full message
-    """
-    return 'Hello %s,\n\n%s\n\n%s' % (recipient, message, sender)
 
 
 def parse_args():

@@ -22,7 +22,7 @@ class Agent(object):
     def __init__(self, service):
         self.service = service
 
-    def send(self, message, user_id='me'):
+    def send(self, message):
         m = MIMEText(message.body)
         m['to'] = message.to
         m['from'] = message.sender
