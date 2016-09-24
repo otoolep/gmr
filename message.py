@@ -10,7 +10,7 @@ class Message(object):
         self.body = body
 
     def __str__(self):
-        s = 'TO:      %s\nFROM:    %s\nSUBJECT: %s\n\n%s\n' % (self.sender, self.to, self.subject, self.body)
+        s = 'TO:      %s\nFROM:    %s\nSUBJECT: %s\n\n%s\n' % (self.to, self.sender, self.subject, self.body)
         return s
 
 
