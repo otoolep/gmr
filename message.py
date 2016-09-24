@@ -10,12 +10,8 @@ class Message(object):
         self.body = body
 
     def __str__(self):
-        print 'TO:      %s' % self.to
-        print 'FROM:    %s' % self.sender
-        print 'SUBJECT: %s' % self.subject
-        print
-        print self.body
-        print
+        s = 'TO:      %s\nFROM:    %s\nSUBJECT: %s\n\n%s\n' % (self.sender, self.to, self.subject, self.body)
+        return s
 
 
 class Agent(object):

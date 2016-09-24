@@ -19,10 +19,10 @@ class Composer(object):
         with open(self.rf, 'rb') as csvfile:
             lines = csv.reader(csvfile)
             for l in lines:
-                self.recipients.append({'name': l[0], 'email': l[1], 'message_ref': [2]})
+                self.recipients.append({'name': l[0], 'email': l[1], 'message_ref': l[2]})
 
         with open(self.mf, 'rb') as csvfile:
-            lines = csv.reader(csvfile)
+            lines = csv.reader(csvfile, delimiter='|')
             for l in lines:
                 self.messages[l[0]] = l[1]
 
@@ -31,11 +31,13 @@ class Composer(object):
 
         return len(self.recipients), len(self.messages)
 
+    def close(self):
+        pass
+
     def __iter__(self):
         return self
 
     def next(self):
-        self.current_recipient += 1
         if self.current_recipient >= len(self.recipients):
             raise StopIteration
 
@@ -43,4 +45,5 @@ class Composer(object):
         m = self.messages[r['message_ref']]
         b = 'Hello %s,\n\n%s\n\n%s' % (r['name'], m, self.footer)
 
-        return message.Message(self.sender, r.email, self.subject, b)
+        self.current_recipient += 1
+        return message.Message(self.sender, r['email'], self.subject, b)
