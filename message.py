@@ -2,7 +2,6 @@ import base64
 from email.mime.text import MIMEText
 
 
-
 class Message(object):
     def __init__(self, sender, to, subject, body):
         self.sender = sender
