@@ -2,6 +2,8 @@ import csv
 
 import message
 
+NL_DELIM='<NL>'
+
 
 class Composer(object):
     def __init__(self, recipients_file, messages_file, footer_file, sender, subject):
@@ -24,7 +26,7 @@ class Composer(object):
         with open(self.mf, 'rb') as csvfile:
             lines = csv.reader(csvfile, delimiter='|')
             for l in lines:
-                self.messages[l[0]] = l[1]
+                self.messages[l[0]] = l[1].replace(NL_DELIM, '\n')
 
         with open(self.ff, 'rb') as f:
             self.footer = f.read()
